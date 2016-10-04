@@ -20,6 +20,8 @@
 // message : tarace
 // code ==> vataee
 
+int datshitIsLower(char key_mod_keylength, int key_mod_keylength_nonalpha, char message, int keylength, int nonalpha);
+
 int main(int argc, string argv[])
 {
     // checking arguments count
@@ -85,6 +87,7 @@ int main(int argc, string argv[])
 	// encoding lower characters
         else if (islower(message[i]))
         {
+		/*
 	    // if "key" char is an upper char
             if (isupper(key[i % keylength]))
 		// i.e. : key[0 % 4] = key[0]
@@ -115,8 +118,9 @@ int main(int argc, string argv[])
                 if (code[i] > 'z')
                     code[i] = code[i] - 26;
 
-            }
+            }*/
 		// end of the day you "return" the value for code[i]
+		code[i]=datshitIsLower(key[i % keylength], key[(i - nonalpha) % keylength], message[i], keylength, nonalpha);
         }
 
 	// no up no low, increment non alpha counter
@@ -137,7 +141,44 @@ int main(int argc, string argv[])
     //printf("\n");
 }
 
+int datshitIsLower(char key_mod_keylength, int key_mod_keylength_nonalpha, char message, int keylength, int nonalpha){
 
+	int code = 0;
+	
+	    // if "key" char is an upper char
+            if (isupper(key_mod_keylength))
+		// i.e. : key[0 % 4] = key[0]
+		// i.e. : key[1 % 4] = key[1]
+		// i.e. : key[2 % 4] = key[2]
+		// i.e. : key[3 % 4] = key[3]
+		// i.e. : key[4 % 4] = key[0]
+		// i.e. : key[5 % 4] = key[1]
+            {
+                code = message + key_mod_keylength_nonalpha - 'A';
+                // same
+                if ((message + key_mod_keylength_nonalpha - 'A') > 'z')
+                    code = code - 26;
+            }
+
+	    // else the "key" char is a lower char, like in our example
+            else
+            {
+                code = message + key_mod_keylength_nonalpha - 'a';
+                //      = t + key[(0 - 0) % 4] - 'a' >> 't' + key[0] - 'a' >> 116 + 99 - 97 = 118 >> 'v'
+		//      = a + key[(1 - 0) % 4] - 'a' >> 'a' + key[1] - 'a' >> 97  + 97 - 97 = 97  >> 'a'
+		//      = r + key[(2 - 0) % 4] - 'a' >> 'r' + key[2] - 'a' >> 114 + 99 - 97 = 116 >> 't'
+		//      = a + key[(3 - 0) % 4] - 'a' >> 'a' + key[3] - 'a' >> 97  + 97 - 97 = 97  >> 'a'
+		//      = c + key[(0 - 0) % 4] - 'a' >> 'c' + key[0] - 'a' >> 99  + 99 - 97 = 101 >> 'e'
+		//      = e + key[(1 - 0) % 4] - 'a' >> 'e' + key[1] - 'a' >> 101 + 97 - 97 = 101 >> 'e'
+
+                //if ((message[i] + key[(i - nonalpha) % keylength] - 'a') > 'z')
+                if (code > 'z')
+                    code = code - 26;
+
+            }
+
+	return code;
+}
 
 
 
