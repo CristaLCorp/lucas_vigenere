@@ -7,7 +7,7 @@
  *                     *
  ***********************/
 
-// TEST FORK
+// cristal_branch
 
 #include <cs50.h>
 #include <string.h>
@@ -15,6 +15,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+// example : 
+// key : caca
+// message : tarace
+// code ==> vataee
 
 int main(int argc, string argv[])
 {
@@ -49,11 +53,12 @@ int main(int argc, string argv[])
     int array_size = strlen(message) - 1;
     char code[array_size];
 
-    // Counter for non-alphabetic characters so the key isn't used on them
+    // Counter for non-alphabetic characters << in the message >> so the key isn't used on them
     int nonalpha = 0;
     
     // crypto loop start
     for (int i = 0, n = strlen(message); i < n; i++)
+	    // i.e. : 6 times loop (tarace == 6 char)
     {
 	// encoding upper characters    
         if (isupper(message[i]))
@@ -80,8 +85,14 @@ int main(int argc, string argv[])
 	// encoding lower characters
         else if (islower(message[i]))
         {
-	    // 
+	    // if "key" char is an upper char
             if (isupper(key[i % keylength]))
+		// i.e. : key[0 % 4] = key[0]
+		// i.e. : key[1 % 4] = key[1]
+		// i.e. : key[2 % 4] = key[2]
+		// i.e. : key[3 % 4] = key[3]
+		// i.e. : key[4 % 4] = key[0]
+		// i.e. : key[5 % 4] = key[1]
             {
                 code[i] = message[i] + key[(i - nonalpha) % keylength] - 'A';
                 // same
@@ -89,14 +100,23 @@ int main(int argc, string argv[])
                     code[i] = code[i] - 26;
             }
 
-	    // 
+	    // else the "key" char is a lower char, like in our example
             else
             {
                 code[i] = message[i] + key[(i - nonalpha) % keylength] - 'a';
-                // same
-                if ((message[i] + key[(i - nonalpha) % keylength] - 'a') > 'z')
+                //      = t + key[(0 - 0) % 4] - 'a' >> 't' + key[0] - 'a' >> 116 + 99 - 97 = 118 >> 'v'
+		//      = a + key[(1 - 0) % 4] - 'a' >> 'a' + key[1] - 'a' >> 97  + 97 - 97 = 97  >> 'a'
+		//      = r + key[(2 - 0) % 4] - 'a' >> 'r' + key[2] - 'a' >> 114 + 99 - 97 = 116 >> 't'
+		//      = a + key[(3 - 0) % 4] - 'a' >> 'a' + key[3] - 'a' >> 97  + 97 - 97 = 97  >> 'a'
+		//      = c + key[(0 - 0) % 4] - 'a' >> 'c' + key[0] - 'a' >> 99  + 99 - 97 = 101 >> 'e'
+		//      = e + key[(1 - 0) % 4] - 'a' >> 'e' + key[1] - 'a' >> 101 + 97 - 97 = 101 >> 'e'
+
+                //if ((message[i] + key[(i - nonalpha) % keylength] - 'a') > 'z')
+                if (code[i] > 'z')
                     code[i] = code[i] - 26;
+
             }
+		// end of the day you "return" the value for code[i]
         }
 
 	// no up no low, increment non alpha counter
@@ -116,3 +136,23 @@ int main(int argc, string argv[])
         
     //printf("\n");
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
