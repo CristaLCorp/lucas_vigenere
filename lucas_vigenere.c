@@ -7,7 +7,7 @@
  *                     *
  ***********************/
 
-// cristal_branch
+// lucas_branch
 
 #include <cs50.h>
 #include <string.h>
